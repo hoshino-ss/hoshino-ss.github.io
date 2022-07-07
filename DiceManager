@@ -1,0 +1,340 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
+
+
+
+//using DG.Tweening;
+
+public class DiceManager : MonoBehaviour
+{
+    public GameObject dice;
+    public GameObject image_0;
+    public GameObject image_1;
+    public GameObject image_2;
+    public GameObject image_3;
+    public GameObject image_4;
+    public GameObject image_5;
+    public GameObject button_0;
+    public GameObject button_1;
+    public GameObject stop;
+
+    Rigidbody2D rb2D;
+    private SpriteRenderer diceImage;
+    private Image diceImage_0;
+    private Image diceImage_1;
+    private Image diceImage_2;
+    private Image diceImage_3;
+    private Image diceImage_4;
+    private Image diceImage_5;
+    private Image buttonImage_0;
+    private Image buttonImage_1;
+    private Image stopImage;
+
+    public TextMeshProUGUI lastDice_text;
+    public TextMeshProUGUI lastDice_text_1;
+
+
+    private int preNum;
+    private int num;
+    private int lastDice = 10;
+    private int lastDice_1 = 10;
+
+
+    float posY;
+
+    Sprite[] images;
+
+    private bool isRandom = false;
+    private bool isimage_0 = false;
+    private bool isimage_1 = false;
+    private bool isimage_2 = false;
+    private bool isimage_3 = false;
+    private bool isimage_4 = false;
+    private bool isimage_5 = false;
+    private bool isTurn = true;
+    private bool isStop = false;
+
+
+
+    void Start()
+    {
+        diceImage = dice.GetComponent<SpriteRenderer>();
+        diceImage_0 = image_0.GetComponent<Image>();
+        diceImage_1 = image_1.GetComponent<Image>();
+        diceImage_2 = image_2.GetComponent<Image>();
+        diceImage_3 = image_3.GetComponent<Image>();
+        diceImage_4 = image_4.GetComponent<Image>();
+        diceImage_5 = image_5.GetComponent<Image>();
+        buttonImage_0 = button_0.GetComponent<Image>();
+        buttonImage_1 = button_1.GetComponent<Image>();
+        stopImage = stop.GetComponent<Image>();
+
+        rb2D = dice.GetComponent<Rigidbody2D>();
+        images = Resources.LoadAll<Sprite>("DiceImage");
+    }
+
+    void Update()
+    {
+        UI();
+        if (isRandom)
+        {
+            if (!rb2D.IsSleeping())
+            {
+                num = Random.Range(0, 6);
+                diceImage.sprite = images[num];
+                preNum = num;
+            }
+            else//止まった時
+            {
+                if (isTurn)
+                {
+                    lastDice -= 1;
+                }
+                else
+                {
+                    lastDice_1 -= 1;
+                }
+
+                switch (preNum)
+                {
+                    case 0:
+                        if (isimage_0)
+                        {
+                            diceImage_0.color = Color.black;
+                            if (isTurn)
+                            {
+                                //lastDice += 2;
+                                isTurn = false;
+                            }
+                            else
+                            {
+                                //lastDice_1 += 2;
+                                isTurn = true;
+                            }
+                            isimage_0 = false;
+                        }
+                        else
+                        {
+                            diceImage_0.color = Color.white;
+                            isimage_0 = true;
+                        }
+                        break;
+                    case 1:
+                        if(isimage_1)
+                        {
+                            diceImage_1.color = Color.black;
+                            if (isTurn)
+                            {
+                                //lastDice += 2;
+                                isTurn = false;
+                            }
+                            else
+                            {
+                                //lastDice_1 += 2;
+                                isTurn = true;
+                            }
+                            isimage_1 = false;
+                        }
+                        else
+                        {
+                            diceImage_1.color = Color.white;
+                            isimage_1 = true;
+                        }
+                        break;
+                    case 2:
+                        if (isimage_2)
+                        {
+                            diceImage_2.color = Color.black;
+                            if (isTurn)
+                            {
+                                //lastDice += 2;
+                                isTurn = false;
+                            }
+                            else
+                            {
+                                //lastDice_1 += 2;
+                                isTurn = true;
+                            }
+                            isimage_2 = false;
+                        }
+                        else
+                        {
+                            diceImage_2.color = Color.white;
+                            isimage_2 = true;
+                        }
+                        break;
+                    case 3:
+                        if (isimage_3)
+                        {
+                            diceImage_3.color = Color.black;
+                            if (isTurn)
+                            {
+                                //lastDice += 2;
+                                isTurn = false;
+                            }
+                            else
+                            {
+                                //lastDice_1 += 2;
+                                isTurn = true;
+                            }
+                            isimage_3 = false;
+                        }
+                        else
+                        {
+                            diceImage_3.color = Color.white;
+                            isimage_3 = true;
+                        }
+                        break;
+                    case 4:
+                        if (isimage_4)
+                        {
+                            diceImage_4.color = Color.black;
+                            if (isTurn)
+                            {
+                                //lastDice += 2;
+                                isTurn = false;
+                            }
+                            else
+                            {
+                                //lastDice_1 += 2;
+                                isTurn = true;
+                            }
+                            isimage_4 = false;
+                        }
+                        else
+                        {
+                            diceImage_4.color = Color.white;
+                            isimage_4 = true;
+                        }
+                        break;
+                    case 5:
+                        if (isimage_5)
+                        {
+                            diceImage_5.color = Color.black;
+                            if (isTurn)
+                            {
+                                //lastDice += 2;
+                                isTurn = false;
+                            }
+                            else
+                            {
+                                //lastDice_1 += 2;
+                                isTurn = true;
+                            }
+                            isimage_5 = false;
+                        }
+                        else
+                        {
+                            diceImage_5.color = Color.white;
+                            isimage_5 = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (lastDice == 0)
+                {
+                    diceImage_5.sprite = images[6];
+                    diceImage_4.sprite = images[9];
+                    isStop = true;
+
+                }
+                else if (lastDice_1 == 0)
+                {
+                    diceImage_0.sprite = images[6];
+                    diceImage_4.sprite = images[9];
+                    isStop = true;
+
+                }
+                else if (isimage_0 && isimage_1 && isimage_2 && isimage_3 && isimage_4 && isimage_5)
+                {
+                    if (isTurn)
+                    {
+                        diceImage_5.sprite = images[6];
+                        diceImage_4.sprite = images[9];
+                        isStop = true;
+
+                    }
+                    else
+                    {
+                        diceImage_0.sprite = images[6];
+                        diceImage_4.sprite = images[9];
+                        isStop = true;
+
+                    }
+                }
+                Debug.Log(preNum + 1);
+                isRandom = false;
+            }
+        }
+    }
+
+
+    public void UI()
+    {
+        lastDice_text.text = lastDice.ToString();
+        lastDice_text_1.text = lastDice_1.ToString();
+        if (isTurn)
+        {
+            buttonImage_0.color = Color.white;
+            buttonImage_1.color = Color.gray;
+        }
+        else
+        {
+            buttonImage_0.color = Color.gray;
+            buttonImage_1.color = Color.white;
+        }
+    }
+
+    //クリックで呼ぶ
+    public void OnClickDice()
+    {
+        if (rb2D.IsSleeping() && !isRandom && isTurn == true)
+        {
+            rb2D.AddForce(new Vector2(0f, 1000f));
+            isRandom = true;
+        }
+    }
+
+    public void OnClickDice_1()
+    {
+        if (rb2D.IsSleeping() && !isRandom && isTurn == false)
+        {
+            rb2D.AddForce(new Vector2(0f, 1000f));
+            isRandom = true;
+        }
+    }
+
+    public void Stop()
+    {
+        if (isStop)
+        {
+            stopImage.sprite = images[7];
+            diceImage_4.sprite = images[4];
+            isStop = false;
+        }
+        else
+        {
+            stopImage.sprite = images[8];
+            diceImage_4.sprite = images[9];
+            isStop = true;
+        }
+    }
+
+    public void Restart()
+    {
+        if (isStop)
+        {
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            diceImage_5.sprite = images[5];
+        }
+
+    }
+}
