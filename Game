@@ -1,0 +1,161 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
+using NCMB;
+
+
+
+public class Game : MonoBehaviour
+{
+    public GameObject object_0;
+    public GameObject object_1;
+    public GameObject object_2;
+    public GameObject object_gmaeOver;
+
+    public Image image_0;
+    public Image image_1;
+    public Image image_2;
+
+    public Image image_mark_0;
+    public Image image_mark_1;
+    public Image image_mark_2;
+
+    private int random;
+    private int score;
+
+    public TextMeshProUGUI textMeshPro;
+    public TextMeshProUGUI textMain;
+
+    public Game_CutIn game_cutin;
+    public BackgroundController backgroundcontroller;
+
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI waitText;
+    private float totalTime = 30;
+    private int seconds;
+    private float waitTime = 4;
+    private int waitSeconds;
+    private bool isFever = false;
+    private bool isRetry = false;
+
+    Image[] imageAll;
+    Image[] image_markAll;
+    GameObject[] objectAll;
+
+    void Start()
+    {
+        //objectAll = Resources.LoadAll<GameObject>("Prefabs");
+        imageAll = new Image[] { image_0, image_1, image_2 };
+        image_markAll = new Image[] { image_mark_0, image_mark_1, image_mark_2 };
+        objectAll = new GameObject[] { object_0, object_1, object_2 };
+        textMain.text = "Tap\nAnd\nClean Cicada";
+        object_gmaeOver.SetActive(false);
+
+    }
+
+
+    void Update()
+    {
+        if(waitTime < 0)
+        {
+            waitText.enabled = false;
+            textMeshPro.text = "SCORE:" + score;
+            totalTime -= Time.deltaTime;
+            seconds = (int)totalTime;
+            timerText.text = "HP:" + seconds.ToString();
+
+            if (totalTime < 0)
+            {
+                waitTime = 100;
+                textMain.text = "Finish\nRetry to touch";
+                isRetry = true;
+                GameOver();
+            }
+
+        }
+        else if(waitTime > 10)
+        {
+
+        }
+        else
+        {
+            waitTime -= Time.deltaTime;
+            waitSeconds = (int)waitTime;
+            waitText.text = waitSeconds.ToString();
+
+        }
+    }
+
+    private void GameOver()
+    {
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
+        object_gmaeOver.SetActive(true);
+    }
+
+    public void OnRetry()
+    {
+        if (isRetry)
+        {
+            Invoke("OnRetry_1", 3f);
+            textMain.text = "Loading...";
+            //object_gmaeOver.SetActive(false);
+            //isRetry = false;
+        }
+    }
+    private void OnRetry_1()
+    {
+        SceneManager.LoadScene("SampleScene");
+
+    }
+    public void OnRandom()
+    {
+    }
+
+    public void OnClick(int i)
+    {
+        if ((random == i) || (isFever))
+        {
+            image_markAll[i].color = new Color(0, 0, 0, 0);
+            imageAll[i].color = Color.gray;
+            imageAll[i].enabled = false;
+            score += 3;
+            totalTime += 3;
+            textMain.text = "Clean Cicada\nScore+3\nHP+5";
+            isFever = true;
+            game_cutin.CutIn();
+        }
+        else
+        {
+            image_markAll[i].color = new Color(0, 0, 0, 0);
+            imageAll[i].color = Color.gray;
+            imageAll[i].enabled = false;
+            score += 1;
+            textMain.text = "No Cicada\nScore+1";
+        }
+        if ((imageAll[0].color == Color.gray) 
+            && (imageAll[1].color == Color.gray) 
+            && (imageAll[2].color == Color.gray))
+        {
+            backgroundcontroller.BackGround();
+            random = Random.Range(0, 16);
+            if (3 <= random && random < 16)
+            {
+                isFever = false;
+            }
+            Debug.Log("random" + random);
+        }
+    }
+    public void OnClean()
+    {
+        for (int a = 0; a < imageAll.Length; a++)
+        {
+            imageAll[a].color = Color.white;
+            image_markAll[a].color = Color.white;
+            imageAll[a].enabled = true;
+        }
+
+    }
+}
